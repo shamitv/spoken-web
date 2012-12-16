@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Spoken Web</string>
+    <string name="menu_settings">Settings</string>
+    <string name="speakButtonId">speakButtonId</string>
+    <string name="speakButtonText">Speak</string>
+    <string name="stopButtonText">Stop</string>
+    <string name="speakText">speakText</string>
+    <string name="defaultURL">http://m.bbc.co.uk/news</string>
+</resources>
