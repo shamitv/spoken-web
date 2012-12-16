@@ -40,6 +40,8 @@ public class AppMain extends Activity implements OnClickListener, TextToSpeech.O
 		setContentView(R.layout.activity_app_main);
         Button speakButton = (Button)findViewById(R.id.speakButton);
         speakButton.setOnClickListener(this);
+        Button stopButton = (Button)findViewById(R.id.stopButton);
+        stopButton.setOnClickListener(this);        
         initWebView();
         ttsInitIntent();
 	}
@@ -88,29 +90,38 @@ public class AppMain extends Activity implements OnClickListener, TextToSpeech.O
     
 	@Override
 	public void onClick(View v) {
-		// Get text entered by user
-		String text = getTextforTTS();
-		//Show alert in debug for text
-		//showMessage(text);
-		//speak(text);
+		if(v.getId()==R.id.speakButton){
+			loadURLinWebView();
+		}else{
+			if(v.getId()==R.id.stopButton){
+				stopTTS();
+			}
+		}
+		
 	}
 	
+	private void stopTTS() {
+		if (tts != null){
+			tts.stop();
+		}
+	}
+
 	private boolean ttsReady=false;
 	
 	private void speakImpl(String text){
 		if(ttsReady){
-			tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+			if(text!=null){
+				//TODO: Split test in smaller chunks
+				//4.1 and newer versions do not accept string larger than 4k chars.
+				//So, for now just limit text to 4k
+				if(text.length()>=4000){
+					text=text.substring(0, 4000-2);
+				}
+				tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+			}
 		}
 	}
 	
-	private String getTextforTTS(){
-		String ret = null;
-		EditText inp = (EditText)findViewById(R.id.speakText);
-		ret = inp.getText().toString();
-		ret = "Loading page" + ret;
-		loadURLinWebView();
-		return ret;
-	}
 	
 
 	private String loadURLinWebView(){
